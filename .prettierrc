@@ -1,0 +1,20 @@
+tabWidth: 4 # dolžina tabulatorja je 4 presledke
+trailingComma: es5 # zadnji element v seznamu je ločen z vejico, kjer je to potrebno
+printWidth: 80 # širina vrstice je največ 80 znakov
+useTabs: false # uporabljamo presledke namesto tabulatorjev
+bracketSpacing: true # presledek pred in za oklepajem
+singleQuote: true # uporabljamo enojne narekovaje, namesto dvojnih kadar je enjonih več
+quoteProps: as-needed # narekovaji se dodajo le, kadar je to potrebno
+bracketSameLine: true # oklepaj je na isti vrstici kot koda
+arrowParens: always # pri lambda funkcijah se v primeru enega elementa tudi uporabijo oklepaji
+endOfLine: lf # uporabljamo LF namesto CRLF
+singleAttributePerLine: false # atributi so lahko na isti vrstici
+overrides: # za posamezne datoteke določimo drugačne nastavitve
+    - files: '*.html' # za vse html datoteke
+      options:
+          parser: html
+          tabWidth: 2 # dolžina tabulatorja je 2 presledka
+    - files: '*.css' # za vse css datoteke
+      options:
+          parser: css
+          tabWidth: 2 # dolžina tabulatorja je 2 presledka
