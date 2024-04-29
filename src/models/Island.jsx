@@ -16,13 +16,7 @@ import { a } from '@react-spring/three';
 import { spring } from 'framer-motion';
 
 const Island = (props) => {
-    const adjustIslandForScreenSize = () => {
-        let screenScale, screenPosition;
-        if (window.innerWidth < 768) {
-            screenScale = 0.5;
-            screenPosition = [0, -1, 0];
-        }
-    };
+
     const islandRef = useRef();
     const { nodes, materials } = useGLTF(islandScene);
     return (
