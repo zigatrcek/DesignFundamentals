@@ -6,7 +6,7 @@ import Loader from '../components/Loader';
 import Island from '../models/Island';
 import Sky from '../models/Sky';
 import Plane from '../models/Plane';
-import Bird from '../models/Bird';
+import Fish from '../models/Fish';
 
 const Home = () => {
     const [isRotating, _setIsRotating] = useState(false);
@@ -29,7 +29,7 @@ const Home = () => {
         if (window.innerWidth < 768) {
             //resizing non functional
             screenScale = [1.5, 1.5, 1.5];
-            screenPosition = [0, -1.5, 10];
+            screenPosition = [0, -3, 10];
         } else {
             screenScale = [3, 3, 10];
             screenPosition = [0, -4, 10];
@@ -40,7 +40,7 @@ const Home = () => {
         adjustIslandForScreenSize();
 
     const [planeScale, planePosition] = adjustPlaneForScreenSize();
-    console.log(planePosition);
+
     return (
         <section className="w-full h-screen relative">
             {/*<div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
@@ -54,14 +54,14 @@ const Home = () => {
                 camera={{ near: 0.001, far: 1000 }}>
                 <Suspense fallback={<Loader />}>
                     <directionalLight position={[10, 5, 10]} intensity={0.1} />
-                    <ambientLight intensity={1.7} />
+                    <ambientLight intensity={1.7} color="#fce1bb" />
                     {/*<pointLight />*/}
                     <hemisphereLight
                         skyColor="#b1e1ff"
                         groundColor="#000000"
                         intensity={1}
                     />
-                    <Bird />
+                    <Fish position={[-10, 0, 5]} />
                     <Sky isRotating={isRotating} />
                     <Island
                         position={islandPosition}

@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import React, { useRef, useEffect, useCallback } from 'react';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -12,23 +13,25 @@ const Island = ({
     ...props
 }) => {
     const islandRef = useRef(null);
-    const { gl, viewport } = useThree();
-    const { scene, nodes, materials } = useGLTF(islandScene);
+    const mouse = new THREE.Vector2();
+    const { camera, raycaster, gl, viewport } = useThree();
+    const { scene, materials } = useGLTF(islandScene);
     const interactableMeshNames = [
-        'cup',
+        'cup_2',
         'leftSidePapers',
-        'knife',
-        'helmet',
-        'lamp',
-        'shield',
-        'candles',
-        'ring',
-        'mushroom',
-        'gloves',
-        'potion',
-        'necklace',
+        'rightSidePapers',
+        'knife_2',
+        'helmet_2',
+        'lamp_2',
+        'shiel_2',
+        'candles_2',
+        'ring_2',
+        'mushroom_2',
+        'gloves_2',
+        'potion_2',
+        'necklace_2',
         'bigPapers',
-        'letter',
+        'letter_2',
         'Papers.001',
     ];
 
@@ -42,27 +45,30 @@ const Island = ({
         _setIsRotating(value);
     }
 
-    const handleMeshClick = useCallback(
-        (event) => {
-            event.stopPropagation();
-            const mesh = event.object;
-            if (
-                interactableMeshNames.includes(mesh.name) &&
-                mesh.userData.onClick
-            ) {
-                mesh.userData.onClick();
-            }
-        },
-        [interactableMeshNames]
-    );
+    const handlePointerDown = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
 
-    // Event handlers for mouse and touch interactions
-    const handlePointerDown = (e) => {
-        console.log('pointer down');
-        e.stopPropagation();
-        e.preventDefault();
+        mouse.x = (event.clientX / gl.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(event.clientY / gl.domElement.clientHeight) * 2 + 1;
+
+        //update raycaster to reflect mouse position
+        raycaster.setFromCamera(mouse, camera);
+
+        //objects intersecting ray
+        const intersects = raycaster.intersectObjects(scene.children, true);
+
+        if (intersects.length > 0) {
+            if (
+                intersects[0].object.isMesh &&
+                interactableMeshNames.includes(intersects[0].object.name)
+            ) {
+                console.log(
+                    `Interactable mesh clicked: ${intersects[0].object.name}`
+                );
+            }
+        }
         setIsRotating(true);
-        console.log(isRotating);
     };
 
     const handlePointerUp = (e) => {
@@ -73,16 +79,15 @@ const Island = ({
     };
 
     const handlePointerMove = (e) => {
-        // console.log('pointer move');
         e.stopPropagation();
         e.preventDefault();
-        // console.log(isRotating);
+
         if (isRotatingRef.current) {
             console.log('rotating');
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const delta = (clientX - lastX.current) / viewport.width;
             if (islandRef.current) {
-                islandRef.current.rotation.y += delta * Math.PI * 0.01;
+                islandRef.current.rotation.y += delta * Math.PI * 0.005;
             }
             lastX.current = clientX;
             rotationSpeed.current = delta * 0.0001 * Math.PI;
@@ -122,20 +127,7 @@ const Island = ({
 
     useEffect(() => {
         const canvas = gl.domElement;
-        if (scene) {
-            scene.traverse((child) => {
-                if (child.isMesh) {
-                    // You can add any specific identification condition if needed
-                    console.log(`Mesh found: ${child.name}`);
-                    child.userData.onClick = () => {
-                        console.log(`Mesh ${child.name} clicked`);
-                        // Additional logic for when a mesh is clicked
-                    };
-                }
-            });
 
-            console.log('Scene is set up');
-        }
         canvas.addEventListener('pointerdown', handlePointerDown);
         canvas.addEventListener('pointerup', handlePointerUp);
         canvas.addEventListener('pointermove', handlePointerMove);
@@ -149,11 +141,11 @@ const Island = ({
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, [gl, scene]);
+    }, [gl]);
 
     // Render the component
     return (
-        <mesh ref={islandRef} {...props} onClick={handleMeshClick}>
+        <mesh ref={islandRef} {...props}>
             <primitive object={scene} />
         </mesh>
     );
