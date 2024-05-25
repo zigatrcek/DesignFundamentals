@@ -23,12 +23,13 @@ const Island = ({
         'knife_2',
         'helmet_2',
         'lamp_2',
-        'shiel_2',
+        'shield_2',
         'candles_2',
         'ring_2',
         'mushroom_2',
         'gloves_2',
         'potion_2',
+        'bottlegreen_2',
         'necklace_2',
         'bigPapers',
         'letter_2',
@@ -45,6 +46,13 @@ const Island = ({
         _setIsRotating(value);
     }
 
+    scene.traverse((child) => {
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+        }
+    });
+
     const handlePointerDown = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -59,13 +67,16 @@ const Island = ({
         const intersects = raycaster.intersectObjects(scene.children, true);
 
         if (intersects.length > 0) {
-            if (
-                intersects[0].object.isMesh &&
-                interactableMeshNames.includes(intersects[0].object.name)
-            ) {
-                console.log(
-                    `Interactable mesh clicked: ${intersects[0].object.name}`
-                );
+            if (intersects[0].object.isMesh) {
+                if (interactableMeshNames.includes(intersects[0].object.name)) {
+                    console.log(
+                        `Interactable mesh clicked: ${intersects[0].object.name}`
+                    );
+                } else {
+                    console.log(
+                        `Non-interactable mesh clicked: ${intersects[0].object.name}`
+                    );
+                }
             }
         }
         setIsRotating(true);
@@ -87,7 +98,7 @@ const Island = ({
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const delta = (clientX - lastX.current) / viewport.width;
             if (islandRef.current) {
-                islandRef.current.rotation.y += delta * Math.PI * 0.005;
+                islandRef.current.rotation.y += delta * Math.PI * 0.009;
             }
             lastX.current = clientX;
             rotationSpeed.current = delta * 0.0001 * Math.PI;

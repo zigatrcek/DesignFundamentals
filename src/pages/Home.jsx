@@ -14,7 +14,7 @@ const Home = () => {
 
     const adjustIslandForScreenSize = () => {
         let screenScale = null;
-        let screenPosition = [0, -6.5, -25];
+        let screenPosition = [0, -6.5, 0];
         let rotation = [0.1, -4.7, 0];
         if (window.innerWidth < 768) {
             screenScale = [0.9, 0.9, 0.9];
@@ -51,7 +51,7 @@ const Home = () => {
                 className={`w-full h-screen bg-transparent ${
                     isRotating ? 'cursor-grabbing' : 'cursor-grab'
                 }`}
-                camera={{ near: 0.001, far: 1000 }}>
+                camera={{ position: [0, 0, 35], near: 0.01, far: 1000 }}>
                 <Suspense fallback={<Loader />}>
                     <directionalLight position={[10, 5, 10]} intensity={0.1} />
                     <ambientLight intensity={1.7} color="#fce1bb" />
@@ -81,9 +81,10 @@ const Home = () => {
                         enableZoom={true}
                         maxPolarAngle={Math.PI / 2}
                         minPolarAngle={Math.PI / 3}
-                        maxDistance={50}
+                        maxDistance={100}
                         minDistance={0}
                         zoomSpeed={1.2}
+                        enableDamping:true
                     />
                 </Suspense>
             </Canvas>
