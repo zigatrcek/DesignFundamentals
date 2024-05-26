@@ -2,16 +2,23 @@ import * as THREE from 'three';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useState, Suspense, useEffect, useRef } from 'react';
-import Loader from '../components/Loader';
+import CustomLoader from '../components/CustomLoader';
 import Island from '../models/Island';
 import Sky from '../models/Sky';
-import Plane from '../models/Plane';
+//import Plane from '../models/Plane';
 import Fish from '../models/Fish';
 
 const Home = () => {
     const [isRotating, _setIsRotating] = useState(false);
     const [currentStage, setCurrentStage] = useState(1);
+    const [showLoader, setShowLoader] = useState(true);
+
     const planeRef = useRef();
+
+    const handleLoaderClick = () => {
+        console.log('Loader clicked, hiding loader');
+        setShowLoader(false); // This will hide the loader when clicked
+    };
 
     const adjustIslandForScreenSize = () => {
         let screenScale = null;
@@ -41,11 +48,12 @@ const Home = () => {
     const [islandScale, islandPosition, islandRotation] =
         adjustIslandForScreenSize();
     useEffect(() => {
-        // This useEffect could log the position or perform other side effects
+        console.log('Loader visibility changed:', showLoader);
+
         if (planeRef.current) {
             console.log('Plane Position:', planeRef.current.position);
         }
-    }, [planePosition]);
+    }, [planePosition, showLoader]);
 
     return (
         <section className="w-full h-screen relative">
@@ -58,7 +66,8 @@ const Home = () => {
                     isRotating ? 'cursor-grabbing' : 'cursor-grab'
                 }`}
                 camera={{ position: [0, 0, 35], near: 0.01, far: 1000 }}>
-                <Suspense fallback={<Loader />}>
+                <Suspense
+                    fallback={<CustomLoader onContinue={handleLoaderClick} />}>
                     <directionalLight position={[10, 5, 10]} intensity={0.1} />
                     <ambientLight intensity={1.7} color="#fce1bb" />
                     {/*<pointLight />*/}
@@ -77,12 +86,12 @@ const Home = () => {
                         _setIsRotating={_setIsRotating}
                         setCurrentStage={setCurrentStage}
                     />
-                    <Plane
+                    {/* <Plane
                         isRotating={isRotating}
                         planeScale={planeScale}
                         planePosition={planePosition}
                         rotation={[0, 20, 0]}
-                    />
+            /> */}
                     <OrbitControls
                         enableZoom={true}
                         maxPolarAngle={Math.PI / 2}
@@ -93,6 +102,7 @@ const Home = () => {
                         enableDamping:true
                     />
                 </Suspense>
+                {showLoader && <CustomLoader showLoader={setShowLoader} />}
             </Canvas>
         </section>
     );

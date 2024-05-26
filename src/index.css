@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,14 +10,14 @@
 }
 
 body {
-  font-family: "Work Sans", sans-serif;
+  font-family: 'Work Sans', sans-serif;
 }
 
-body:has(.card[data-color="blue"]:hover) {
+body:has(.card[data-color='blue']:hover) {
   background-color: rgb(var(--blue-rgb) / 25%);
 }
 
-body:has(.card[data-color="green"]:hover) {
+body:has(.card[data-color='green']:hover) {
   background-color: rgb(var(--green-rgb) / 25%);
 }
 
@@ -48,10 +48,6 @@ body:has(.card[data-color="green"]:hover) {
 
   .btn {
     @apply text-white bg-gradient-to-r from-[#00c6ff] to-[#0072ff] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center;
-  }
-
-  .header {
-    @apply flex justify-between items-center sm:px-16 px-8 py-4 max-w-5xl mx-auto absolute top-0 bg-transparent z-10 right-0 left-0;
   }
 
   .footer {
@@ -180,4 +176,55 @@ body:has(.card[data-color="green"]:hover) {
   border: #fff;
   box-shadow: 0.6vmin 0.6vmin #fff, 1vmin 1vmin #d2e4ff, 1vmin 1vmin #d2e4ff,
     0.65vmin 1vmin #d2e4ff, 1vmin 0.65vmin #d2e4ff;
+}
+
+/*custom loader css*/
+
+.custom-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  transform: translate3d(0, 0, 0) !important;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #83a4d4, #b6fbff);
+  z-index: 1000;
+}
+
+.slide-top {
+  flex-basis: 50%;
+  width: 50%; /* Adjust based on your image size */
+  animation: slideDown 0.5s ease-out forwards;
+  position: right;
+  top: 0;
+}
+
+.slide-bottom {
+  flex-basis: 50%;
+  width: 60%; /* Adjust based on your image size */
+  animation: slideUp 0.5s ease-out forwards;
+  position: left;
+  bottom: 0;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

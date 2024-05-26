@@ -126,7 +126,7 @@ const Island = ({
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
             const rotationDirection = e.key === 'ArrowLeft' ? 1 : -1;
-            rotationSpeed.current = 0.005 * Math.PI * rotationDirection;
+            rotationSpeed.current = 0.001 * Math.PI * rotationDirection;
             setIsRotating(true);
         }
     };
