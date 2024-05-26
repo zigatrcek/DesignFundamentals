@@ -15,7 +15,7 @@ const Home = () => {
 
     const adjustIslandForScreenSize = () => {
         let screenScale = null;
-        let screenPosition = [0, -7.5, 1];
+        let screenPosition = [-1, -7.5, 5];
         let rotation = [0.1, -4.7, 0];
         if (window.innerWidth < 768) {
             screenScale = [0.9, 0.9, 0.9];
@@ -30,10 +30,10 @@ const Home = () => {
         if (window.innerWidth < 768) {
             //resizing non functional
             screenScale = [1.5, 1.5, 1.5];
-            screenPosition = [0, 2, 28];
+            screenPosition = [0, 2, 30];
         } else {
             screenScale = [3, 3, 10];
-            screenPosition = [0, 1, 28];
+            screenPosition = [0, 1, 30];
         }
         return [screenScale, screenPosition];
     };

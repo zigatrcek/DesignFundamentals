@@ -125,31 +125,28 @@ const Island = ({
     //keyboard interractions
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-            setIsRotating(true);
             const rotationDirection = e.key === 'ArrowLeft' ? 1 : -1;
             rotationSpeed.current = 0.005 * Math.PI * rotationDirection;
+            setIsRotating(true);
         }
     };
 
     const handleKeyUp = (e) => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-            setIsRotating(false);
+            setIsRotating(false); // Indicate rotation input has ended
         }
     };
 
     // Animation frame loop
     useFrame(() => {
         if (islandRef.current) {
+            islandRef.current.rotation.y += rotationSpeed.current;
+
             if (
-                Math.abs(rotationSpeed.current) > 0.0001 ||
-                isDragging.current
+                !isRotatingRef.current &&
+                Math.abs(rotationSpeed.current) > 0.0001
             ) {
-                islandRef.current.rotation.y += rotationSpeed.current;
-            }
-
-            if (!isDragging.current) {
                 rotationSpeed.current *= dampingFactor;
-
                 if (Math.abs(rotationSpeed.current) < 0.0001) {
                     rotationSpeed.current = 0;
                 }
