@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useGLTF, OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 
@@ -13,9 +13,11 @@ const Island = ({
     ...props
 }) => {
     const islandRef = useRef(null);
+    const controlsRef = useRef();
     const mouse = new THREE.Vector2();
     const { camera, raycaster, gl, viewport } = useThree();
-    const { scene, materials } = useGLTF(islandScene);
+    const { scene } = useGLTF(islandScene);
+
     const interactableMeshNames = [
         'cup_2',
         'leftSidePapers',
@@ -36,9 +38,11 @@ const Island = ({
         'Papers.001',
     ];
 
+    const [rotationY, setRotationY] = useState(0);
     const lastX = useRef(0);
     const rotationSpeed = useRef(0);
     const dampingFactor = 0.95;
+    const isDragging = useRef(false);
 
     const isRotatingRef = React.useRef(isRotating);
     function setIsRotating(value) {
@@ -53,12 +57,15 @@ const Island = ({
         }
     });
 
-    const handlePointerDown = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
+    let pointer = false; //pointer state so that island doesn't start rotating on click
 
-        mouse.x = (event.clientX / gl.domElement.clientWidth) * 2 - 1;
-        mouse.y = -(event.clientY / gl.domElement.clientHeight) * 2 + 1;
+    const handlePointerDown = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        lastX.current = e.clientX;
+        mouse.x = (e.clientX / gl.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(e.clientY / gl.domElement.clientHeight) * 2 + 1;
 
         //update raycaster to reflect mouse position
         raycaster.setFromCamera(mouse, camera);
@@ -79,33 +86,43 @@ const Island = ({
                 }
             }
         }
-        setIsRotating(true);
+        pointer = true;
     };
 
     const handlePointerUp = (e) => {
         console.log('pointer up');
         e.stopPropagation();
         e.preventDefault();
-        setIsRotating(false);
+        _setIsRotating(false);
+        isDragging.current = false;
+        pointer = false;
     };
 
     const handlePointerMove = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        if (pointer) {
+            _setIsRotating(true);
+            e.stopPropagation();
+            e.preventDefault();
+            isDragging.current = true;
 
-        if (isRotatingRef.current) {
-            console.log('rotating');
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const delta = (clientX - lastX.current) / viewport.width;
-            if (islandRef.current) {
-                islandRef.current.rotation.y += delta * Math.PI * 0.009;
+            if (isDragging.current) {
+                const deltaX = e.clientX - lastX.current;
+                rotationSpeed.current = deltaX * 0.002;
+                lastX.current = e.clientX;
             }
-            lastX.current = clientX;
-            rotationSpeed.current = delta * 0.0001 * Math.PI;
+
+            if (isRotating) {
+                console.log('rotating');
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const deltaX = (clientX - lastX.current) / viewport.width;
+                islandRef.current.rotation.y += deltaX * Math.PI * 0.009;
+                lastX.current = clientX;
+                rotationSpeed.current = deltaX * 0.0001 * Math.PI;
+            }
         }
     };
 
-    // Event handlers for keyboard interactions
+    //keyboard interractions
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
             setIsRotating(true);
@@ -123,12 +140,16 @@ const Island = ({
     // Animation frame loop
     useFrame(() => {
         if (islandRef.current) {
-            if (isRotating || rotationSpeed.current !== 0) {
+            if (
+                Math.abs(rotationSpeed.current) > 0.0001 ||
+                isDragging.current
+            ) {
                 islandRef.current.rotation.y += rotationSpeed.current;
             }
 
-            if (!isRotating) {
+            if (!isDragging.current) {
                 rotationSpeed.current *= dampingFactor;
+
                 if (Math.abs(rotationSpeed.current) < 0.0001) {
                     rotationSpeed.current = 0;
                 }
@@ -154,10 +175,10 @@ const Island = ({
         };
     }, [gl]);
 
-    // Render the component
     return (
         <mesh ref={islandRef} {...props}>
             <primitive object={scene} />
+            <OrbitControls ref={controlsRef} enableDamping={true} />
         </mesh>
     );
 };
