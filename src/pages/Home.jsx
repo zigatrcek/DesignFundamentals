@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect, useRef } from 'react';
 import Loader from '../components/Loader';
 import Island from '../models/Island';
 import Sky from '../models/Sky';
@@ -11,10 +11,11 @@ import Fish from '../models/Fish';
 const Home = () => {
     const [isRotating, _setIsRotating] = useState(false);
     const [currentStage, setCurrentStage] = useState(1);
+    const planeRef = useRef();
 
     const adjustIslandForScreenSize = () => {
         let screenScale = null;
-        let screenPosition = [0, -6.5, 0];
+        let screenPosition = [0, -7.5, 1];
         let rotation = [0.1, -4.7, 0];
         if (window.innerWidth < 768) {
             screenScale = [0.9, 0.9, 0.9];
@@ -29,17 +30,22 @@ const Home = () => {
         if (window.innerWidth < 768) {
             //resizing non functional
             screenScale = [1.5, 1.5, 1.5];
-            screenPosition = [0, -3, 10];
+            screenPosition = [0, 2, 28];
         } else {
             screenScale = [3, 3, 10];
-            screenPosition = [0, -4, 10];
+            screenPosition = [0, 1, 28];
         }
         return [screenScale, screenPosition];
     };
+    const [planeScale, planePosition] = adjustPlaneForScreenSize();
     const [islandScale, islandPosition, islandRotation] =
         adjustIslandForScreenSize();
-
-    const [planeScale, planePosition] = adjustPlaneForScreenSize();
+    useEffect(() => {
+        // This useEffect could log the position or perform other side effects
+        if (planeRef.current) {
+            console.log('Plane Position:', planeRef.current.position);
+        }
+    }, [planePosition]);
 
     return (
         <section className="w-full h-screen relative">
