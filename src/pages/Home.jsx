@@ -57,6 +57,7 @@ const Home = () => {
 
     return (
         <section className="w-full h-screen relative">
+            {showLoader && <CustomLoader onClick={handleLoaderClick} />}
             {/*<div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
                 POPUP
 
@@ -66,8 +67,7 @@ const Home = () => {
                     isRotating ? 'cursor-grabbing' : 'cursor-grab'
                 }`}
                 camera={{ position: [0, 0, 35], near: 0.01, far: 1000 }}>
-                <Suspense
-                    fallback={<CustomLoader onContinue={handleLoaderClick} />}>
+                <Suspense fallback={null}>
                     <directionalLight position={[10, 5, 10]} intensity={0.1} />
                     <ambientLight intensity={1.7} color="#fce1bb" />
                     {/*<pointLight />*/}
@@ -102,8 +102,8 @@ const Home = () => {
                         enableDamping:true
                     />
                 </Suspense>
-                {showLoader && <CustomLoader showLoader={setShowLoader} />}
             </Canvas>
+            {!showLoader && <div>Home Page Content</div>}
         </section>
     );
 };

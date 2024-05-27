@@ -182,23 +182,20 @@ body:has(.card[data-color='green']:hover) {
 
 .custom-loader {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: 100vh;
   display: flex;
-  transform: translate3d(0, 0, 0) !important;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background: linear-gradient(to bottom, #83a4d4, #b6fbff);
   z-index: 1000;
 }
-
+//TODO: make the
 .slide-top {
   flex-basis: 50%;
   width: 50%; /* Adjust based on your image size */
-  animation: slideDown 0.5s ease-out forwards;
+  animation: slideDown cubic-bezier(0.165, 0.84, 0.44, 1) ease-out forwards;
   position: right;
   top: 0;
 }
@@ -206,7 +203,7 @@ body:has(.card[data-color='green']:hover) {
 .slide-bottom {
   flex-basis: 50%;
   width: 60%; /* Adjust based on your image size */
-  animation: slideUp 0.5s ease-out forwards;
+  animation: slideUp cubic-bezier(0.165, 0.84, 0.44, 1) ease-out forwards;
   position: left;
   bottom: 0;
 }
