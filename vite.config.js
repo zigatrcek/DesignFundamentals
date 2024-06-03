@@ -8,6 +8,7 @@ export default defineConfig({
         '**/*.glb',
         '**/*.gltf',
         '**/*.jpg',
+
         '**/*.png',
         '**/*.svg',
         '**/*.mp4',

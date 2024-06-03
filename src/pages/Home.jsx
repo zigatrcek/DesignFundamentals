@@ -6,7 +6,7 @@ import CustomLoader from '../components/CustomLoader';
 import Island from '../models/Island';
 import Sky from '../models/Sky';
 //import Plane from '../models/Plane';
-import Fish from '../models/Fish';
+import FishPod from '../models/FishPod';
 
 const Home = () => {
     const [isRotating, _setIsRotating] = useState(false);
@@ -76,7 +76,7 @@ const Home = () => {
                         groundColor="#000000"
                         intensity={1}
                     />
-                    <Fish position={[-10, 0, 5]} />
+                    <FishPod />
                     <Sky isRotating={isRotating} />
                     <Island
                         position={islandPosition}

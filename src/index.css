@@ -1,9 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: 'Otto';
+  src: url('./assets/otto/Otto.ttf') format('truetype'); /* Adjust the path and format as necessary */
+  font-weight: normal;
+  font-style: normal;
+}
 
+body {
+  font-family: 'Otto', cursive;
+}
 :root {
   --blue-rgb: 237 245 255;
   --green-rgb: 125 161 35;
@@ -181,6 +188,7 @@ body:has(.card[data-color='green']:hover) {
 /*custom loader css*/
 
 .custom-loader {
+  padding: 20px;
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -191,20 +199,22 @@ body:has(.card[data-color='green']:hover) {
   background: linear-gradient(to bottom, #83a4d4, #b6fbff);
   z-index: 1000;
 }
-//TODO: make the
+
 .slide-top {
   flex-basis: 50%;
-  width: 50%; /* Adjust based on your image size */
-  animation: slideDown cubic-bezier(0.165, 0.84, 0.44, 1) ease-out forwards;
-  position: right;
+  width: 30%; /* Adjust based on your image size */
+  animation: slideDown 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  position: absolute;
+  right: 0;
   top: 0;
 }
 
 .slide-bottom {
   flex-basis: 50%;
   width: 60%; /* Adjust based on your image size */
-  animation: slideUp cubic-bezier(0.165, 0.84, 0.44, 1) ease-out forwards;
-  position: left;
+  animation: slideUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  position: absolute;
+  left: 0;
   bottom: 0;
 }
 

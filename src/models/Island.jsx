@@ -39,6 +39,7 @@ const Island = ({
     ];
 
     const [rotationY, setRotationY] = useState(0);
+    const [shiny, setShiny] = useState(false);
     const lastX = useRef(0);
     const rotationSpeed = useRef(0);
     const dampingFactor = 0.95;
