@@ -6,7 +6,8 @@ import CustomLoader from '../components/CustomLoader';
 import Island from '../models/Island';
 import Sky from '../models/Sky';
 //import Plane from '../models/Plane';
-import FishPod from '../models/FishPod';
+// import FishPod from '../models/FishPod';
+import { Model } from '../models/finsh';
 
 const Home = () => {
     const [isRotating, _setIsRotating] = useState(false);
@@ -63,9 +64,8 @@ const Home = () => {
 
             </div>*/}
             <Canvas
-                className={`w-full h-screen bg-transparent ${
-                    isRotating ? 'cursor-grabbing' : 'cursor-grab'
-                }`}
+                className={`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'
+                    }`}
                 camera={{ position: [0, 0, 35], near: 0.01, far: 1000 }}>
                 <Suspense fallback={null}>
                     <directionalLight position={[10, 5, 10]} intensity={0.1} />
@@ -76,7 +76,12 @@ const Home = () => {
                         groundColor="#000000"
                         intensity={1}
                     />
-                    <FishPod />
+                    {/* <FishPod /> */}
+
+                    {/* <Model />
+                    <Model />
+                    <Model />
+                    <Model /> */}
                     <Sky isRotating={isRotating} />
                     <Island
                         position={islandPosition}

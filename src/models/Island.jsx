@@ -4,6 +4,7 @@ import { useGLTF, OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 
 import islandScene from '../assets/3d/town.glb';
+import { Model } from './finsh';
 
 const Island = ({
     isRotating,
@@ -177,6 +178,9 @@ const Island = ({
         <mesh ref={islandRef} {...props}>
             <primitive object={scene} />
             <OrbitControls ref={controlsRef} enableDamping={true} />
+            <Model position={[0, 0, 10]} rotation={[THREE.MathUtils.degToRad(90), 0, - Math.PI / 2]} />
+            <Model position={[0, 0, 15]} rotation={[0, 0, Math.PI / 2]} />
+            <Model position={[5, -5, 20]} />
         </mesh>
     );
 };
