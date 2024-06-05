@@ -183,7 +183,10 @@ const Island = ({
             <Model position={[5, -5, 20]} rotation={[0, - Math.PI / 4, 0]} />
             <Model position={[5, -10, 20]} rotation={[Math.PI / 4, - Math.PI / 4, 0]} />
             <Model position={[12, -5, -15]} rotation={[- Math.PI / 8, Math.PI / 4, 0]} />
-            <Model position={[5, -30, -20]} rotation={[0, - Math.PI / 4, 0]} />
+            <Model position={[5, -15, -20]} rotation={[0, - Math.PI / 4, 0]} />
+            <Model position={[5, -10, -20]} rotation={[Math.PI / 4, - Math.PI / 4, 0]} />
+            <Model position={[12, -5, 15]} rotation={[- Math.PI / 8, Math.PI / 4, 0]} />
+            <Model position={[5, -15, 20]} rotation={[0, - Math.PI / 4, 0]} />
         </mesh>
     );
 };
