@@ -29,26 +29,40 @@ export function Model({ initialRotation, ...props }) {
 
   useFrame((state) => {
     const speed = 0.05;
-    const maxDistance = 50;
-
+    const maxDistance = 30;
 
     // calculate the distance between initial position and current position
     const distance = fishRef.current.position.distanceTo(new THREE.Vector3(0, 0, 0));
     console.log('distance:', distance);
     if (distance > maxDistance) {
-      // turn around
-      fishRef.current.rotation.negate();
+      // const rot = fishRef.current.rotation;
+      // // turn around
+      // fishRef.current.rotation.set(- rot.x, - rot.y, - rot.z);
+      fishRef.current.rotation.y += Math.PI;
     }
-    let rotation = fishRef.current.rotation.toArray();
-    let rotationVector = new THREE.Vector3().fromArray(rotation);
-    if (rotationVector.length() < 0.1) {
-      rotationVector = new THREE.Vector3(0, 0, 1);
-    }
-    rotationVector.normalize();
-    console.log('rotation:', rotationVector);
-    const direction = rotationVector.multiplyScalar(speed);
 
-    fishRef.current.position.add(direction);
+    const direction = new THREE.Vector3(0, 0, 1);
+    direction.applyQuaternion(fishRef.current.quaternion);
+
+    fishRef.current.position.add(direction.multiplyScalar(speed));
+
+
+    // let rotation = fishRef.current.rotation;
+    // console.log('rotation:', rotation);
+    // let rotationVector = new THREE.Vector3().fromArray(rotation);
+    // if (rotationVector.length() < 0.1) {
+    //   rotationVector = new THREE.Vector3(0, 0, 1);
+    // }
+    // rotationVector.normalize();
+    // console.log('rotation after:', rotationVector);
+    // console.log('position:', fishRef.current.position.toArray());
+    // const direction = rotationVector.multiplyScalar(speed);
+
+    // fishRef.current.position.add(direction);
+    // // sleep for a second
+    // setTimeout(() => {
+    //   fishRef.current.position.add(direction);
+    // }, 1000);
 
 
     // fishRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 2;
